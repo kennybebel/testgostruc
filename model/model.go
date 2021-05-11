@@ -5,6 +5,18 @@ import (
 	"time"
 )
 
+type OptionInfo struct {
+	Deleted     bool   `xml:"Delete" json:"Delete"`
+	Description string `xml:"Description" json:"Description"`
+	Group       string `xml:"Group" json:"Group"`
+	Name        string `xml:"Name" json:"Name"`
+	Platform    string `xml:"Platform" json:"Platform"`
+	SupplierID  string `xml:"SupplierID" json:"SupplierID"`
+	Type        string `xml:"Type" json:"Type"`
+	Value       string `xml:"Value" json:"Value"`
+	Version     int    `xml:"Version" json:"Version"`
+}
+
 //OrderItem
 type OrderItem struct {
 	ItemID          int     `xml:"ItemID" json:"ItemID"`
