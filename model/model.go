@@ -17,6 +17,29 @@ type OptionInfo struct {
 	Version     int    `xml:"Version" json:"Version"`
 }
 
+type TestStock struct {
+	ProductID string
+	GRV       int
+	POD1      int
+	POD2      int
+	POD3      int
+	POD4      int
+	Invoice   int
+	Credit    int
+}
+
+type OptionInfo struct {
+	Deleted     bool
+	Description string
+	Group       string
+	Name        string
+	Platform    string
+	SupplierID  string
+	Type        string
+	Value       string
+	Version     int
+}
+
 //OrderItem
 type OrderItem struct {
 	ItemID          int     `xml:"ItemID" json:"ItemID"`
