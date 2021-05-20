@@ -24,7 +24,7 @@ func Unmarshal(fileName string, data interface{}) error {
 }
 
 //BatchQuery will query a table for all the items that have the supplierID passed
-func BatchQueryOrder(tableName string, SupplierID string, filter string, sortkeyName string, client *dynamodb.DynamoDB) (*dynamodb.QueryOutput, error) {
+func BatchQueryOrder(tableName string, SupplierID string, filter string, client *dynamodb.DynamoDB) (*dynamodb.QueryOutput, error) {
 	if filter == "" {
 		// Creating the query parameters which will get all test Order from dynamodb
 		inputQuery := &dynamodb.QueryInput{
@@ -34,7 +34,7 @@ func BatchQueryOrder(tableName string, SupplierID string, filter string, sortkey
 				},
 			},
 			KeyConditionExpression: aws.String("SupplierID = :SupplierID"),
-			ProjectionExpression:   aws.String("SupplierID, " + sortkeyName),
+			ProjectionExpression:   aws.String("SupplierID, SortKey"),
 			TableName:              aws.String(tableName),
 		}
 		// result will hold the results of the Query of TradeOrders table for all test data
@@ -74,7 +74,25 @@ func BatchQueryOrder(tableName string, SupplierID string, filter string, sortkey
 }
 
 // Creating the query parameters which will get the test stock from dynamodb
+func BatchQueryStock(tableName string, SupplierID string, client *dynamodb.DynamoDB) (*dynamodb.QueryOutput, error) {
+	StockQuery := &dynamodb.QueryInput{
 
+		ExpressionAttributeValues: map[string]*dynamodb.AttributeValue{
+			":SupplierID": {
+				S: aws.String(SupplierID),
+			},
+		},
+		KeyConditionExpression: aws.String("SupplierID = :SupplierID"),
+		ProjectionExpression:   aws.String("SupplierID, ProductID, Warehouse,Stock "),
+		TableName:              aws.String("tableName"),
+	}
+	// result will hold the results of the Query of TradeStock table for all test data
+	result, err := client.Query(StockQuery)
+	if err != nil {
+		return result, err
+	}
+	return result, nil
+}
 
 //BatchDeleteOrder will delete all orders from the table given
 func BatchDeleteOrder(orders []model.OrderInfo, tableName string, client *dynamodb.DynamoDB) error {
